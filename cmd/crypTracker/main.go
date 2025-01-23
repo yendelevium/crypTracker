@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/yendelevium/crypTracker/internal/routes"
@@ -14,6 +15,7 @@ func main() {
 	// Creating a fiber App
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) error {
+		c.Status(http.StatusOK)
 		return c.SendString("Whatup crypTracker?!")
 	})
 

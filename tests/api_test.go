@@ -18,5 +18,5 @@ func TestApi(t *testing.T) {
 	// This is for internal debugguing. app.Test() will make the request u pass through it
 	resp, _ := app.Test(req)
 	// This is for testing the output using testify
-	assert.Equal(t, http.StatusBadGateway, resp.StatusCode)
+	assert.Equal(t, http.StatusOK, resp.StatusCode)
 }
