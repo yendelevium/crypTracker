@@ -19,8 +19,10 @@ func main() {
 		return c.SendString("Whatup crypTracker?!")
 	})
 
-	// Mounting a sub-router, which has the paths for /api
-	app.Mount("/api", routes.Api())
+	// Mounting a sub-router, which has the paths for /crypto
+	// I want a path for /crypto/coins for now, but we can expand it later with /crytpo/nfts
+	app.Mount("/crypto", routes.CoinRouter())
+	app.Mount("/users", routes.UserRouter())
 
 	log.Fatal(app.Listen(":8080"))
 }
