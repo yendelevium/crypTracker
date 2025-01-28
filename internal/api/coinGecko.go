@@ -2,6 +2,8 @@
 // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&x_cg_demo_api_key=YOUR_API_KEY
 // See the JSON result to create corresponding structs and to parse the data
 
+// DON'T USE AMRITA INTERNET TO MAKE THE REQUEST, THESE PEOPLE HAVE BLOCKED THE SITE FOR SOME REASON
+
 package api
 
 import (
@@ -10,17 +12,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/yendelevium/crypTracker/models"
 )
 
 // Return value/ function arguments?!
-func FetchCoinData() ([]models.CoinData, error) {
-	err := godotenv.Load()
-	if err != nil {
-		// log.Fatalf("Error loading .env file: %s", err)
-		return []models.CoinData{}, err
-	}
+func FetchCoinData() ([]models.Coin, error) {
 	apiKey := os.Getenv("COINGECKO_API_KEY")
 
 	// Creating the request for the coinGecko endpoint
@@ -28,7 +24,7 @@ func FetchCoinData() ([]models.CoinData, error) {
 	req, err := http.NewRequest(http.MethodGet, "https://api.coingecko.com/api/v3/coins/markets", nil)
 	if err != nil {
 		// log.Fatalf("Failed to create http request to /coins/markets: %s", err)
-		return []models.CoinData{}, err
+		return []models.Coin{}, err
 	}
 
 	req.Header.Add("x_cg_demo_api_key", apiKey)
@@ -43,21 +39,21 @@ func FetchCoinData() ([]models.CoinData, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		// log.Fatalf("Error getting a response: %s", err)
-		return []models.CoinData{}, err
+		return []models.Coin{}, err
 	}
 	defer resp.Body.Close()
 	// log.Println(resp.StatusCode)
 	data, err := io.ReadAll(resp.Body)
 	if err != nil {
 		// log.Printf("Error reading the response body: %s", err)
-		return []models.CoinData{}, err
+		return []models.Coin{}, err
 	}
 
-	var respData []models.CoinData
+	var respData []models.Coin
 	err = json.Unmarshal(data, &respData)
 	if err != nil {
 		// log.Printf("Failed to unmarshal data: %s", err)
-		return []models.CoinData{}, err
+		return []models.Coin{}, err
 	}
 
 	return respData, nil
