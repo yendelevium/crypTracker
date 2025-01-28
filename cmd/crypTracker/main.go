@@ -4,23 +4,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
-	"github.com/joho/godotenv"
 	"github.com/yendelevium/crypTracker/internal/database"
+	"github.com/yendelevium/crypTracker/internal/initializers"
 	"github.com/yendelevium/crypTracker/internal/routes"
 	"github.com/yendelevium/crypTracker/models"
 )
 
+// This runs BEFORE main
+func init() {
+	initializers.LoadEnv()
+}
+
 func main() {
 	fmt.Print("Whatup crypTracker?!")
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatalf("Couldn't load .env file :%s", err)
-	}
-	dbURL := os.Getenv("DB_URL")
-	dbClient, err := database.ConnectPostgres(dbURL)
+	dbClient, err := database.ConnectPostgres()
 	if err != nil {
 		log.Fatalf("Connection to postgres failed :%s", err)
 	}

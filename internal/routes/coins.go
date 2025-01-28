@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -41,13 +42,14 @@ func CoinRouter(dbClient *database.DBClient) *fiber.App {
 		// Logic for single coin details
 		// The stuff we display in the /coins, + Short desc, graph, etc
 		var coin models.Coin
+		coinId := c.Params("coinId")
 		// SELECT * FROM "coins" WHERE coin_gecko_id = 'coinId' ORDER BY "coins"."coin_gecko_id" LIMIT 1
-		result := dbClient.Client.First(&coin, "coin_gecko_id = ?", c.Params("coinId"))
+		result := dbClient.Client.First(&coin, "coin_gecko_id = ?", coinId)
 		if result.Error != nil {
 			log.Printf("Couldn't find coin :%s", result.Error)
 			c.Status(http.StatusBadRequest)
 			return c.JSON(models.Error{
-				Message: "CoinID doesn't exist",
+				Message: fmt.Sprintf("'%s' doesn't exist", coinId),
 				Status:  http.StatusBadRequest,
 			})
 		}

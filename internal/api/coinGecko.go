@@ -10,17 +10,11 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/yendelevium/crypTracker/models"
 )
 
 // Return value/ function arguments?!
 func FetchCoinData() ([]models.Coin, error) {
-	err := godotenv.Load()
-	if err != nil {
-		// log.Fatalf("Error loading .env file: %s", err)
-		return []models.Coin{}, err
-	}
 	apiKey := os.Getenv("COINGECKO_API_KEY")
 
 	// Creating the request for the coinGecko endpoint

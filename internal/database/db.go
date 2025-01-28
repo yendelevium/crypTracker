@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"os"
 
 	"github.com/yendelevium/crypTracker/internal/api"
 	"gorm.io/driver/postgres"
@@ -12,8 +13,8 @@ type DBClient struct {
 	Client *gorm.DB
 }
 
-func ConnectPostgres(dbURL string) (*DBClient, error) {
-	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
+func ConnectPostgres() (*DBClient, error) {
+	db, err := gorm.Open(postgres.Open(os.Getenv("DB_URL")), &gorm.Config{})
 	return &DBClient{Client: db}, err
 }
 
