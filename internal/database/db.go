@@ -3,6 +3,8 @@ package database
 import (
 	"log"
 	"os"
+	"sync"
+	"time"
 
 	"github.com/yendelevium/crypTracker/internal/api"
 	"gorm.io/driver/postgres"
@@ -36,4 +38,33 @@ func (dbClient *DBClient) Seed() error {
 	}
 
 	return nil
+}
+
+func (dbClient *DBClient) ScrapeData(wg *sync.WaitGroup) error {
+	defer wg.Done()
+	data, err := api.FetchCoinData()
+	if err != nil {
+		log.Println(err)
+		return err
+	}
+	// Inserting each element
+	for _, ele := range data {
+		result := dbClient.Client.Model(&ele).Updates(ele)
+		if result.Error != nil {
+			log.Println(result)
+		}
+	}
+
+	return nil
+}
+
+func (dbCLient *DBClient) StartScraping() {
+	ticker := time.NewTicker(15 * time.Second)
+	for ; ; <-ticker.C {
+		wg := &sync.WaitGroup{}
+		log.Println("Scraping Data")
+		wg.Add(1)
+		go dbCLient.ScrapeData(wg)
+		wg.Wait()
+	}
 }
