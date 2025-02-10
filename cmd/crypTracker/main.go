@@ -43,6 +43,9 @@ func main() {
 	// 	log.Fatalf("Couldn't seed Database: %s", err)
 	// }
 
+	// Start to fetch API data every 10 seconds
+	go dbClient.StartScraping()
+
 	// Creating a fiber App
 	app := fiber.New()
 	app.Get("/", func(c *fiber.Ctx) error {
