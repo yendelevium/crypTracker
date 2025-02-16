@@ -1,8 +1,11 @@
 function Home(){
     return(
-        <>
-            <h1 className="text-3xl font-bold underline">Home/crypTracker</h1>
-        </>
+        <main className="p-3">
+            <h1 className="text-4xl pb-2">Home/crypTracker</h1>
+            <div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem quo alias beatae modi laborum nulla delectus, asperiores, architecto fugit pariatur illum doloribus dolores accusantium labore quasi numquam nam natus deleniti.
+            </div>
+        </main>
     )
 }
 

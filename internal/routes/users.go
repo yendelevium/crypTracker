@@ -176,7 +176,7 @@ func UserRouter(dbClient *database.DBClient) *fiber.App {
 
 	// Should use DELETE as I'm technically deleting the JWT
 	// But I'll be redirecting to this after deleting user, and I can only redirect GET methods
-	userRouter.Add(http.MethodGet, "/signout", func(c *fiber.Ctx) error {
+	userRouter.Add(http.MethodGet, "/signout", middleware.AuthorizeUser, func(c *fiber.Ctx) error {
 		// Doesn't work
 		// c.ClearCookie("Authorization")
 
