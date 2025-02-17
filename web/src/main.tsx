@@ -1,4 +1,4 @@
-import { StrictMode, useEffect } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from "react-router";
 import Home from './pages/Home';
@@ -9,16 +9,6 @@ import Login from './pages/Login';
 import Watchlist from './pages/Watchlist';
 import Signup from './pages/Signup';
 import "./index.css"
-import { io } from 'socket.io-client';
-
-// Doing socket stuff in useEffect?
-useEffect(()=>{
-  const socket = io("http://localhost:8080");
-  socket.on("connect", () => {
-    console.log(socket.id);
-  });
-
-},[])
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

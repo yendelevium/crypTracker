@@ -24,7 +24,7 @@ func SendCryptoData(coinData []models.Coin) {
 // IDK the point of the callback
 var WSServer = socketio.New(func(kws *socketio.Websocket) {
 	log.Println("Socket Upgradation Endpoint")
-	kws.Emit([]byte("Estabilished connection to crypTracker"))
+	// kws.Emit([]byte("Estabilished connection to crypTracker"))
 })
 
 // Basically just to setup the socketio.On() events
@@ -53,7 +53,7 @@ func WSRouter() func(*fiber.Ctx) error {
 	// Testing message event
 	socketio.On(socketio.EventMessage, func(ep *socketio.EventPayload) {
 		log.Println(ep.Data)
-		ep.Kws.Emit([]byte("Works?"))
+		// ep.Kws.Emit([]byte("Works?"))
 	})
 
 	return WSServer
