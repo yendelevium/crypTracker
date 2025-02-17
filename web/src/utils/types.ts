@@ -36,34 +36,14 @@ type TCoin = {
 type TUser = {
     user_id: string,
     username: string,
-    passoword: string,
+    password?: string,
     profile_image: string,
-    created_at: Date,
-    updated_at: Date,
-}
-
-// type Watchlist struct {
-// 	// watchlist_user_id(w_user_id) or just user_id?!
-// 	UserID      string    `json:"user_id" gorm:"primaryKey;autoIncrement:false;constraint:OnDelete:CASCADE"`
-// 	CoinGeckoID string    `json:"coin_id" gorm:"primaryKey;autoIncrement:false;constraint:OnDelete:CASCADE"`
-// 	CreatedAt   time.Time `json:"created_at" gorm:"autoCreateTime"`
-// 	UpdatedAt   time.Time `json:"updated_at" gorm:"autoUpdateTime"`
-
-// 	// Relationships (optional but recommended for clarity)
-// 	User *User `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"`
-// 	Coin *Coin `gorm:"foreignKey:CoinGeckoID;constraint:OnDelete:CASCADE"`
-// }
-
-type TWatchlist={
-    user_id: string,
-    coin_id: string,
-    created_at: Date,
-    updated_at: Date,
+    created_at?: Date,
+    updated_at?: Date,
 }
 
 export type{
     
     TCoin,
     TUser,
-    TWatchlist
 }

@@ -6,9 +6,9 @@ interface CoinState {
     setAllCoins: (newCoins: TCoin[]) => void;
 }
 
-const useCoinStore = create<CoinState>((set) => ({
+const coinStore = create<CoinState>((set) => ({
     allCoins: [],
     setAllCoins: (newCoins) => set(() => ({ allCoins: newCoins })),
 }));
 
-export default useCoinStore;
+export default coinStore;
