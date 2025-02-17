@@ -1,9 +1,16 @@
 import React from "react"
 import coinStore from "../store/coinStore"
 import Coin from "../components/Coin"
+
+// Invalid DOM property `stroke-linecap`. Did you mean `strokeLinecap`? Component Stack: 
+// This is an SVG error, where react needs the stuff to be camelCased
+// The Error is from the Search-Icon SVQ in the search-bar
+
 function Currencies(){
     const {allCoins, setAllCoins} = coinStore()
     React.useEffect(()=>{
+        // TODO:
+        // Error Handling needed
         const getCoins = async ()=>{
             const response = await fetch("http://localhost:8080/crypto/coins")
             if (!response.ok) {
