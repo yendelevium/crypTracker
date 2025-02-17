@@ -1,6 +1,7 @@
 import React from "react"
 import coinStore from "../store/coinStore"
 import Coin from "../components/Coin"
+import Table from "../components/Table"
 
 // Invalid DOM property `stroke-linecap`. Did you mean `strokeLinecap`? Component Stack: 
 // This is an SVG error, where react needs the stuff to be camelCased
@@ -18,7 +19,7 @@ function Currencies(){
             }
             const coinJSON = await response.json()
             setAllCoins(coinJSON)
-            console.log(coinJSON)
+            // console.log(coinJSON)
         }
         getCoins()
     },[setAllCoins])
@@ -53,29 +54,7 @@ function Currencies(){
             </div>
 
             {/* Coin display Table */}
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" className="px-6 py-3">
-                                Coin
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Market Price
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Last Updated AT (debugging purposes)
-                            </th>
-                            <th scope="col" className="px-6 py-3">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {coinJSX}
-                    </tbody>
-                </table>
-            </div>
+            <Table coinJSX={coinJSX}/>
         </main>
     )
 }

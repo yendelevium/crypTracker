@@ -44,7 +44,7 @@ func CreateJWT(userData models.User) (*fiber.Cookie, error) {
 	jwtCookie := fiber.Cookie{
 		Name:     "Authorization",
 		Value:    tokenString,
-		HTTPOnly: true,
+		HTTPOnly: false, //So the cookie can be accessed via JS on the client side
 		SameSite: "Lax", //So the client properly stores the cookie, and also something else, google it ig
 		// Set Secure : true ONLY IN PRODUCTION over https
 		// Secure:   true,
@@ -110,9 +110,11 @@ func UserRouter(dbClient *database.DBClient) *fiber.App {
 		c.Cookie(jwtCookie)
 		c.Status(http.StatusCreated)
 		return c.JSON(struct {
-			Message string `json:"message"`
+			Message  string      `json:"message"`
+			UserData models.User `json:"user_data"`
 		}{
-			Message: "201 : Successfully registered user",
+			Message:  "201 : Successfully registered user",
+			UserData: userData,
 		})
 	})
 
@@ -166,11 +168,15 @@ func UserRouter(dbClient *database.DBClient) *fiber.App {
 		c.Cookie(jwtCookie)
 		c.Status(http.StatusOK)
 		return c.JSON(struct {
-			Message string `json:"message"`
-			UserID  string `json:"user_id"`
+			Message  string      `json:"message"`
+			UserID   string      `json:"user_id"`
+			UserData models.User `json:"user_data"`
 		}{
 			Message: fmt.Sprintf("Successfully logged in user : %s!", user.Username),
 			UserID:  fetchedUser.UserID,
+			// Maybe not the entire fetchedUser, but I'm doing this hacky thing to not call
+			// /users/:userId again to get user details in frontend
+			UserData: fetchedUser,
 		})
 	})
 
