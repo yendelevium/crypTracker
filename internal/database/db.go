@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/yendelevium/crypTracker/internal/api"
+	"github.com/yendelevium/crypTracker/internal/websockets"
 	"github.com/yendelevium/crypTracker/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -46,6 +47,9 @@ func (dbClient *DBClient) ScrapeData() {
 	if err != nil {
 		log.Println(err)
 	}
+
+	// Send the data to the client
+	websockets.SendCryptoData(data)
 
 	// If I run EVERY update concurrently, due to write-write conflict, the DB kindof implements a lock
 	// This makes it counter productive as this makes it take MORE TIME PER QUERY

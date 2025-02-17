@@ -5,10 +5,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
 	"github.com/yendelevium/crypTracker/internal/database"
 	"github.com/yendelevium/crypTracker/internal/initializers"
 	"github.com/yendelevium/crypTracker/internal/routes"
+	"github.com/yendelevium/crypTracker/internal/websockets"
 	"github.com/yendelevium/crypTracker/models"
 )
 
@@ -52,6 +54,18 @@ func main() {
 		c.Status(http.StatusOK)
 		return c.SendString("Whatup crypTracker?!")
 	})
+
+	// WS upgrade
+	app.Use("/ws", func(c *fiber.Ctx) error {
+		// IsWebSocketUpgrade returns true if the client
+		// requested upgrade to the WebSocket protocol.
+		if websocket.IsWebSocketUpgrade(c) {
+			c.Locals("allowed", true)
+			return c.Next()
+		}
+		return fiber.ErrUpgradeRequired
+	})
+	app.Get("/ws", websockets.WSRouter())
 
 	// Mounting a sub-router, which has the paths for /crypto
 	// I want a path for /crypto/coins for now, but we can expand it later with /crytpo/nfts
