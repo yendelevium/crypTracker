@@ -1,6 +1,6 @@
 import React from "react"
 
-export default function UserForm(){
+export default function UserForm(props?:any){
     // Making the form a controlled component by controlling the state of the inputs
     const [credentials,setCredentials] = React.useState({
         username:"",
@@ -21,6 +21,7 @@ export default function UserForm(){
     function handleSubmit(event: React.FormEvent<HTMLFormElement>){
         // Preventing refresh and resetting all fields to empty on submit
         event.preventDefault()
+        props.handleAuth(credentials.username,credentials.password)
         // Login/Signup logic ot backend
         // Toast to show whether login was successfull or not
         setCredentials({username:"",password:""})
