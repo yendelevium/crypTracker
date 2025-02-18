@@ -10,19 +10,27 @@ import Watchlist from './pages/Watchlist';
 import Signup from './pages/Signup';
 import "./index.css"
 
+import ProtectedRoutes from './utils/ProtectedRoutes';
+import LoggedInRoutes from './utils/LoggedInRoutes';
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />}/>
-
-        <Route path='/login' element={<Login />}/>
-        <Route path='/signup' element={<Signup />}/>
-        <Route path='/profile' element={<Profile />}/>
-
         <Route path='/cryptocurrencies' element={<Currencies />}/>
-        <Route path='/watchlist/:userId' element={<Watchlist />}/>
+
+        <Route element={<ProtectedRoutes/>}>
+          <Route path='/profile' element={<Profile />}/>
+          <Route path='/watchlist' element={<Watchlist />}/>
+        </Route>
+
+        <Route element={<LoggedInRoutes/>}>
+          <Route path='/login' element={<Login />}/>
+          <Route path='/signup' element={<Signup />}/>
+        </Route>
+
       </Routes>
     </BrowserRouter>
   </StrictMode>

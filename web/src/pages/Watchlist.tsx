@@ -1,29 +1,14 @@
 import userStore from "../store/userStore"
-import coinStore from "../store/coinStore"
 import Coin from "../components/Coin"
-import { type TCoin } from "../utils/types"
 import React from "react"
 import Table from "../components/Table"
+import Toast from "../components/Toast"
+import toastStore from "../store/toastStore"
 
 function Watchlist(){
-    const {currentUser, watchlist, setWatchlist} = userStore()
-    const {allCoins } = coinStore()
+    const {watchlist} = userStore()
+    const {toastMessage} = toastStore()
     let watchlistJSX: React.JSX.Element[] = [];
-
-    // Getting the watchlist of the user, and if it's null, setting it to [] coz otherwise JS will raise an error
-    // Reget watchlist everytime my allCoins updates to be uptodate with the newest crypto prices
-    React.useEffect(()=>{
-        const getWatchlist = async()=>{
-            const fetchResponse = await fetch(`/users/${currentUser?.user_id}/watchlist`)
-            let watchlistData: TCoin[] = await fetchResponse.json()
-            if (watchlistData === null){
-                watchlistData = []
-            }
-            setWatchlist(watchlistData)
-        }
-        getWatchlist()
-    },[allCoins])
-
     // Only on a non-empty list (otherwise we get an error), map over the watchlist to create the JSX
     if (watchlist.length > 0){
         watchlistJSX = watchlist.map(coin=>{
@@ -40,6 +25,7 @@ function Watchlist(){
 
             {/* Remove the 'Add to Watchlist' Thingy */}
             <Table coinJSX={watchlistJSX}/>
+            {toastMessage ? <Toast/> : null}
         </main>
     )
 }
