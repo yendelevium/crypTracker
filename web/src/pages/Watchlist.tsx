@@ -4,9 +4,10 @@ import Coin from "../components/Coin"
 import { type TCoin } from "../utils/types"
 import React from "react"
 import Table from "../components/Table"
+import Toast from "../components/Toast"
 
 function Watchlist(){
-    const {currentUser, watchlist, setWatchlist} = userStore()
+    const {currentUser, watchlist, toastMessage, setWatchlist} = userStore()
     const {allCoins } = coinStore()
     let watchlistJSX: React.JSX.Element[] = [];
 
@@ -40,6 +41,7 @@ function Watchlist(){
 
             {/* Remove the 'Add to Watchlist' Thingy */}
             <Table coinJSX={watchlistJSX}/>
+            {toastMessage ? <Toast message={toastMessage} type={"success"}/> : null}
         </main>
     )
 }

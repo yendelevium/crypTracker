@@ -7,11 +7,13 @@ interface UserState{
     isLoggedIn: boolean
     currentUser: null|TUser
     watchlist: TCoin[]
+    toastMessage: string|null
     setIsLoggedIn: (loginState: boolean)=>void
     setCurrentUser: (newUser: TUser)=>void
     setWatchlist: (newWatchlist: TCoin[]) => void
-    handleUserLogin: (username: string, password:string)=>void
-    handleUserSignup: (username: string, password:string)=>void
+    setToastMessage: (message: null|string)=>void
+    handleUserLogin: (username: string, password:string) => any
+    handleUserSignup: (username: string, password:string) => any
 }
 
 // When I close the tab, the cookie persists, but the storeData DOESN'T
@@ -23,6 +25,8 @@ const userStore = create<UserState>((set)=>({
     isLoggedIn: false,
     currentUser: null,
     watchlist: [],
+    toastMessage: null,
+    setToastMessage: (message: string|null)=>{set(()=>({toastMessage: message}))},
     setWatchlist: (newWatchlist: TCoin[]) => {set(()=>({watchlist: newWatchlist}))},
     setIsLoggedIn: (loginState: boolean)=>{set(()=>({isLoggedIn:loginState}))},
     setCurrentUser: (newUser: TUser)=>{set(()=>({currentUser: newUser}))},
@@ -35,14 +39,14 @@ const userStore = create<UserState>((set)=>({
             })
         })
 
+        const userData = await loginResponse.json()
         if (loginResponse.status !== 200){
-            console.log("Send an ERROR Toast later")
-            return
+            throw new Error(`Counldn't login: ${userData.message}`)
         }
 
-        const userData = await loginResponse.json()
-        console.log(userData)
+        // console.log(userData)
         set(()=>({currentUser: userData.user_data, isLoggedIn: true}))
+        return userData
     },
 
     handleUserSignup: async(username: string, password: string)=>{
@@ -54,14 +58,14 @@ const userStore = create<UserState>((set)=>({
             })
         })
 
+        const userData = await signupResponse.json()
         if (signupResponse.status !== 201){
-            console.log("Send an ERROR Toast later")
-            return
+            throw new Error(`Couldn't signup ${userData.message}`)
         }
 
-        const userData = await signupResponse.json()
-        console.log(userData)
+        // console.log(userData)
         set(()=>({currentUser: userData.user_data, isLoggedIn: true}))
+        return userData
     }
 }))
 

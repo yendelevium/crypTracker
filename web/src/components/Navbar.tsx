@@ -73,10 +73,10 @@ function Navbar(){
             <div className="navLinks flex justify-evenly">
                 <Link to="cryptocurrencies">Currencies</Link>
                 {/* Watchlist must redirect to login if  you're not logged in*/}
-                <Link to="watchlist/<userId>">Watchlist</Link>
+                <Link to="watchlist">Watchlist</Link>
                 {/* Either Login OR Profile must be displayed based on whether user is logged in or not */}
                 <Link to="login">Login</Link>
-                <Link to="signup">Signup</Link>
+                {/* <Link to="signup">Signup</Link> */}
                 <Link to="profile">Profile</Link>
             </div>
         </nav>

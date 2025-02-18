@@ -22,7 +22,7 @@ function Coin(props:CoinProps){
                 {currTime.toUTCString()}
             </td>
             <td className="px-6 py-4">
-                <a href="#" className="font-medium text-blue-600 dark:text-blue-500 hover:underline">Add to Watchlist</a>
+                <button className="cursor-pointer">Add to Watchlist</button>
             </td>
         </tr>
     )
