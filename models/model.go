@@ -9,7 +9,7 @@ type User struct {
 	UserID       string      `json:"user_id" gorm:"primaryKey;autoIncrement:false"`
 	Username     string      `json:"username" gorm:"not null;unique"`
 	Password     string      `json:"password" gorm:"not null"`
-	ProfileImage string      `json:"profile_image" gorm:"default:https://unsplash.com/illustrations/a-colorful-pattern-with-a-green-circle-in-the-middle-h54uX2BEclQ"` //Take the img, store in teh cloud, and put the cloud link here
+	ProfileImage string      `json:"profile_image" gorm:"default:https://plus.unsplash.com/premium_vector-1725479330926-997591b3ca07?q=80&w=2450&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"` //Take the img, store in teh cloud, and put the cloud link here
 	CreatedAt    time.Time   `json:"created_at" gorm:"autoCreateTime"`
 	UpdatedAt    time.Time   `json:"updated_at" gorm:"autoUpdateTime"`
 	Watchlist    []Watchlist `gorm:"foreignKey:UserID;constraint:OnDelete:CASCADE"` // Relationship to Watchlist

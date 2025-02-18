@@ -1,7 +1,8 @@
 import { Link } from "react-router"
 import React from "react";
-import coinStore from "../store/coinStore";
+import coinStore from "../store/coinStore"
 import userStore from "../store/userStore"
+import toastStore from "../store/toastStore";
 import { jwtVerify } from "jose";
 import Cookie from "js-cookie"
 
@@ -9,6 +10,8 @@ import { type TCoin } from "../utils/types";
 
 function Navbar(){
     const {setAllCoins} = coinStore()
+    const { currentUser, setIsLoggedIn, setCurrentUser, setWatchlist }=userStore();
+    const {setToastMessage, setToastType} = toastStore();
 
     // Shift these useEffects to someother place, they should be executed upon DOM Rendering
     React.useEffect(()=>{
@@ -39,7 +42,7 @@ function Navbar(){
     },[])
 
     // To simulate login-persistance, so I can stay logged in even AFTER i refresh/reload/exit out of the page
-    const { currentUser, setIsLoggedIn, setCurrentUser }=userStore()
+    // This should be somewhere else ig? coz if I delete the cookie from the client side, it won't re-render and remove the user, L
     React.useEffect(()=>{
         // Get the JWT from the cookie
         const AuthJWT = Cookie.get("Authorization")
@@ -47,7 +50,7 @@ function Navbar(){
         if(AuthJWT!=undefined){
             const getUser = async ()=>{
                 // Verify JWT
-                const { payload } = await jwtVerify(AuthJWT, new TextEncoder().encode("Demon King of Salvation"));
+                const { payload } = await jwtVerify(AuthJWT, new TextEncoder().encode(import.meta.env.VITE_SECRET));
                 console.log(payload);
 
                 // Fetch userDetails
@@ -59,10 +62,33 @@ function Navbar(){
             }
     
             getUser()
+        }else{
+            setIsLoggedIn(false)
+            setCurrentUser(null)
         }
         console.log(currentUser?.username)    
     },[])
 
+    async function handleSignout(){
+        fetch(`/users/${currentUser?.user_id}/signout`, {method: "GET"})
+        .then(async (response)=>{
+            const signoutData = await response.json()
+            setToastMessage(signoutData.message)
+            setToastType("success")
+            setCurrentUser(null)
+            setIsLoggedIn(false)
+            setWatchlist([])
+        })
+        .catch((error:unknown)=>{
+            if (typeof error === "string") {
+                setToastMessage(error)
+                setToastType("error")
+            } else if (error instanceof Error) {
+                setToastMessage(error.message)
+                setToastType("error")
+            }
+        })
+    }
 
     return(
         <>
@@ -72,12 +98,10 @@ function Navbar(){
             </div>
             <div className="navLinks flex justify-evenly">
                 <Link to="cryptocurrencies">Currencies</Link>
-                {/* Watchlist must redirect to login if  you're not logged in*/}
-                <Link to="watchlist">Watchlist</Link>
-                {/* Either Login OR Profile must be displayed based on whether user is logged in or not */}
-                <Link to="login">Login</Link>
-                {/* <Link to="signup">Signup</Link> */}
-                <Link to="profile">Profile</Link>
+                {currentUser ?<Link to="watchlist">Watchlist</Link>:null}
+                {currentUser ?<Link to="profile">Profile</Link>:null}
+                {currentUser ?<button onClick={handleSignout} className="cursor-pointer">Signout</button>:null}
+                {currentUser ?null:<Link to="login">Login</Link>}
             </div>
         </nav>
         </>

@@ -7,11 +7,9 @@ interface UserState{
     isLoggedIn: boolean
     currentUser: null|TUser
     watchlist: TCoin[]
-    toastMessage: string|null
     setIsLoggedIn: (loginState: boolean)=>void
-    setCurrentUser: (newUser: TUser)=>void
+    setCurrentUser: (newUser: null|TUser)=>void
     setWatchlist: (newWatchlist: TCoin[]) => void
-    setToastMessage: (message: null|string)=>void
     handleUserLogin: (username: string, password:string) => any
     handleUserSignup: (username: string, password:string) => any
 }
@@ -25,11 +23,9 @@ const userStore = create<UserState>((set)=>({
     isLoggedIn: false,
     currentUser: null,
     watchlist: [],
-    toastMessage: null,
-    setToastMessage: (message: string|null)=>{set(()=>({toastMessage: message}))},
     setWatchlist: (newWatchlist: TCoin[]) => {set(()=>({watchlist: newWatchlist}))},
     setIsLoggedIn: (loginState: boolean)=>{set(()=>({isLoggedIn:loginState}))},
-    setCurrentUser: (newUser: TUser)=>{set(()=>({currentUser: newUser}))},
+    setCurrentUser: (newUser: null|TUser)=>{set(()=>({currentUser: newUser}))},
     handleUserLogin: async(username: string, password: string)=>{
         const loginResponse = await fetch("/users/login",{
             method: "POST",

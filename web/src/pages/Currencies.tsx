@@ -3,7 +3,7 @@ import coinStore from "../store/coinStore"
 import Coin from "../components/Coin"
 import Table from "../components/Table"
 import Toast from "../components/Toast"
-import userStore from "../store/userStore"
+import toastStore from "../store/toastStore"
 
 // Invalid DOM property `stroke-linecap`. Did you mean `strokeLinecap`? Component Stack: 
 // This is an SVG error, where react needs the stuff to be camelCased
@@ -11,7 +11,7 @@ import userStore from "../store/userStore"
 
 function Currencies(){
     const {allCoins, setAllCoins} = coinStore()
-    const {toastMessage} = userStore()
+    const {toastMessage} = toastStore()
     React.useEffect(()=>{
         // TODO:
         // Error Handling needed
@@ -58,7 +58,7 @@ function Currencies(){
 
             {/* Coin display Table */}
             <Table coinJSX={coinJSX}/>
-            {toastMessage ? <Toast message={toastMessage} type={"success"}/> : null}
+            {toastMessage ? <Toast /> : null}
         </main>
     )
 }

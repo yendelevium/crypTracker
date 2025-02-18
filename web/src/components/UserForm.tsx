@@ -1,11 +1,11 @@
 import React from "react"
 import { useNavigate } from 'react-router';
 import Toast from "./Toast";
-import userStore from "../store/userStore";
+import toastStore from "../store/toastStore";
 
 export default function UserForm(props?:any){
     const navigate = useNavigate();
-    const {setToastMessage, toastMessage} = userStore()
+    const {toastMessage, setToastMessage, setToastType} = toastStore()
     // Making the form a controlled component by controlling the state of the inputs
     const [credentials,setCredentials] = React.useState({
         username:"",
@@ -33,14 +33,17 @@ export default function UserForm(props?:any){
                 // We can't pass state to the previous using navigate(-1)
                 // So, we use the global store and set the toastMessage there instead
                 setToastMessage(data.message)
+                setToastType("success")
                 navigate(-1)
             })
             .catch((error:unknown)=>{
                 console.log(error)
                 if (typeof error === "string") {
                     setToastMessage(error)
+                    setToastType("error")
                 } else if (error instanceof Error) {
                     setToastMessage(error.message)
+                    setToastType("error")
                 }
             })
         // Toast to show whether login was successfull or not
@@ -49,7 +52,7 @@ export default function UserForm(props?:any){
 
     return(
         <div>
-            {toastMessage ?<Toast message={toastMessage} type={"error"}/> : null}
+            {toastMessage ?<Toast/> : null}
             <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
                 <div className="mb-5">
                     <label htmlFor="username" className="block mb-2 text-sm font-medium text-gray-900">Username</label>
