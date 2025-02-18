@@ -4,10 +4,8 @@ import {create} from 'zustand'
 import { type TCoin, TUser } from '../utils/types'
 
 interface UserState{
-    isLoggedIn: boolean
     currentUser: null|TUser
     watchlist: TCoin[]
-    setIsLoggedIn: (loginState: boolean)=>void
     setCurrentUser: (newUser: null|TUser)=>void
     setWatchlist: (newWatchlist: TCoin[]) => void
     handleUserLogin: (username: string, password:string) => any
@@ -20,11 +18,9 @@ interface UserState{
 // Check the cookie, if it's there, decrypt it and set userState
 // On refresh itself it goes off TF
 const userStore = create<UserState>((set)=>({
-    isLoggedIn: false,
     currentUser: null,
     watchlist: [],
     setWatchlist: (newWatchlist: TCoin[]) => {set(()=>({watchlist: newWatchlist}))},
-    setIsLoggedIn: (loginState: boolean)=>{set(()=>({isLoggedIn:loginState}))},
     setCurrentUser: (newUser: null|TUser)=>{set(()=>({currentUser: newUser}))},
     handleUserLogin: async(username: string, password: string)=>{
         const loginResponse = await fetch("/users/login",{

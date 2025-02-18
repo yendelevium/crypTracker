@@ -10,7 +10,7 @@ import { type TCoin } from "../utils/types";
 
 function Navbar(){
     const {setAllCoins} = coinStore()
-    const { currentUser, setIsLoggedIn, setCurrentUser, setWatchlist }=userStore();
+    const { currentUser, setCurrentUser, setWatchlist }=userStore();
     const {setToastMessage, setToastType} = toastStore();
 
     // Shift these useEffects to someother place, they should be executed upon DOM Rendering
@@ -58,12 +58,10 @@ function Navbar(){
                 const userData = await reponse.json()
                 console.log(userData)
                 setCurrentUser(userData)
-                setIsLoggedIn(true)
             }
     
             getUser()
         }else{
-            setIsLoggedIn(false)
             setCurrentUser(null)
         }
         console.log(currentUser?.username)    
@@ -76,7 +74,6 @@ function Navbar(){
             setToastMessage(signoutData.message)
             setToastType("success")
             setCurrentUser(null)
-            setIsLoggedIn(false)
             setWatchlist([])
         })
         .catch((error:unknown)=>{
