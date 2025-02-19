@@ -28,7 +28,12 @@ function Navbar(){
         // Converting the event payload into JSON, and updating all the coins
         socket.onmessage = (event) => {
             let coinData: TCoin[] = JSON.parse(event.data)
-            setAllCoins(coinData)
+            if (coinData.length!==0) {
+                setAllCoins(coinData)
+            }else{
+                setToastMessage("Couldn't update COINS; Get https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd: read tcp 172.20.249.66:56738->172.67.12.83:443: read: connection reset by peer")
+                setToastType("error")
+            }
         };
 
         socket.onerror = (error) => {

@@ -3,7 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
+	"os"
+	"strings"
 
 	"github.com/gofiber/contrib/websocket"
 	"github.com/gofiber/fiber/v2"
@@ -50,11 +51,6 @@ func main() {
 
 	// Creating a fiber App
 	app := fiber.New()
-	app.Get("/", func(c *fiber.Ctx) error {
-		c.Status(http.StatusOK)
-		return c.SendString("Whatup crypTracker?!")
-	})
-
 	// WS upgrade
 	app.Use("/ws", func(c *fiber.Ctx) error {
 		// IsWebSocketUpgrade returns true if the client
@@ -72,5 +68,33 @@ func main() {
 	app.Mount("/crypto", routes.CoinRouter(dbClient))
 	app.Mount("/users", routes.UserRouter(dbClient))
 
+	// PRODUCTION
+	if os.Getenv("RUNTIME_ENV") == "production" {
+		log.Println("Serving PROD")
+		pd, _ := os.Getwd()
+		fmt.Println("Current working directory:", pd)
+
+		// Ensure /assets/ paths are correctly served, ie the .js and .css static files in vite
+		// If you don't add this, the server is misconfigured and serves index.html instead of actual JS files.
+		// Otherwise, you get an error like this:
+		// Loading module from “http://localhost:8080/assets/index-B8OBafhz.js” was blocked because of a disallowed MIME type (“text/html”).
+		app.Use(func(c *fiber.Ctx) error {
+			path := c.Path()
+			// Checking if it has /assets/ in it's path, (which is true for .js and .css files)
+			// If it is, serve THOSE files instead of sending index.html (default for app.Static())
+			if strings.HasPrefix(path, "/assets/") {
+				filePath := "./web/dist" + path
+				if _, err := os.Stat(filePath); err == nil {
+					return c.SendFile(filePath)
+				}
+				return c.SendStatus(404) // Return 404 if the file doesn't exist
+			}
+			return c.SendFile("./web/dist/index.html") // Fallback for React Router
+		})
+
+		// Serving the static files, which by default, is index.html
+		// But you can configure it to be wtv u want using fiber.Static{} config
+		app.Static("/", "./web/dist")
+	}
 	log.Fatal(app.Listen(":8080"))
 }
