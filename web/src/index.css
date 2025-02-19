@@ -11,5 +11,6 @@
     position: fixed;
     bottom: 20px; /* Adjust the distance from the bottom */
     right: 20px; /* Adjust the distance from the right */
+    left: 20px; /* Adjust the distance from the left */
     z-index: 9999; /* Ensure it's above other content */
 }

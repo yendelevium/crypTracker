@@ -31,10 +31,11 @@ export default function UserForm(props?:any){
         props.handleAuth(credentials.username,credentials.password)
             .then((data:any)=>{
                 // We can't pass state to the previous using navigate(-1)
+                // We can't use navigate(-1) in production fr some reason :/
                 // So, we use the global store and set the toastMessage there instead
                 setToastMessage(data.message)
                 setToastType("success")
-                navigate(-1)
+                navigate("/cryptocurrencies")
             })
             .catch((error:unknown)=>{
                 console.log(error)

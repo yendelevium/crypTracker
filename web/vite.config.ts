@@ -16,6 +16,9 @@ export default defineConfig({
       "/users":{
         target:"http://localhost:8080"
       }
-    }
+    },
+    fs: {
+      strict: true, // Prevents serving non-existent files as HTML
+    },
   },
 })
