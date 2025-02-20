@@ -5,9 +5,16 @@ import toastStore from "../store/toastStore"
 
 type CoinProps = {
     coinData : TCoin
+    filter : string
 }
 
 function Coin(props:CoinProps){
+    // Search elimination
+    const regex = new RegExp(`${props.filter?.toLowerCase()}`);
+    const searchFiltered = regex.test(props.coinData.id)
+    if (!searchFiltered){
+        return
+    }
     const {currentUser, watchlist, setWatchlist} = userStore()
     const {setToastMessage, setToastType} = toastStore();
     const navigator = useNavigate();
@@ -108,7 +115,7 @@ function Coin(props:CoinProps){
     }
     const currTime = new Date()
     
-    return(
+    return( 
         <tr className="bg-white border-b border-gray-200 hover:bg-gray-50">
             <th scope="row" className="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                 <img className="w-10 h-10 rounded-full" src={props.coinData.image} alt={`${props.coinData.id}'s Image`}/>

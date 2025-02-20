@@ -16,7 +16,7 @@ func SendCryptoData(coinData []models.Coin) {
 	if err != nil {
 		log.Fatalf("Error marshalling WS broadcast to JSON: %s", err)
 	}
-	log.Println("Hitem BITCHES")
+	// log.Println("Hitem BITCHES")
 	socketio.Broadcast(brodcastData)
 }
 

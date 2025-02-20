@@ -5,6 +5,7 @@ function Profile(){
     return(
         <main className="p-3">
             <h1 className="text-4xl pb-2 text-center">User Profile:{currentUser?.username}</h1>
+            <p className="text-center">There's SO MUCH happening on this profile page, right?</p>
             <div className="flex justify-center">
                 <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
                     <img className="rounded-t-lg h-48 w-96 object-cover" src={currentUser?.profile_image} alt="profile-pic" />
