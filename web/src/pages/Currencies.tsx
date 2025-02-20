@@ -12,6 +12,7 @@ import toastStore from "../store/toastStore"
 function Currencies(){
     const {allCoins, setAllCoins} = coinStore()
     const {toastMessage} = toastStore()
+    const [search,setSearch] = React.useState<string>("")
     React.useEffect(()=>{
         // TODO:
         // Error Handling needed
@@ -27,9 +28,15 @@ function Currencies(){
         getCoins()
     },[setAllCoins])
 
+    function searchHandler(event: React.ChangeEvent<HTMLInputElement>){
+        const {value}:{value: string, name: string} = event.currentTarget
+        setSearch(value)
+        console.log(value)
+    }
+
     const coinJSX = allCoins.map(coin => {
         return(
-            <Coin coinData={coin} key={coin.id}/>
+            <Coin coinData={coin} key={coin.id} filter={search.trim()}/>
         )
     })
 
@@ -47,13 +54,14 @@ function Currencies(){
                             </svg>
                         </div>
                     {/* TODO : Implement dynamic search-bar */}
-                        <input type="text" id="table-search-users" className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for coin(s)"/>
+                        <input type="text" id="table-search-users" className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500" placeholder="Search for coin(s)" value={search} onChange={(event)=>searchHandler(event)} name="search"/>
                     </div>
                 </div>
             </div>
 
             <div className="mb-2">
-                Checkout all the available crypto-currencies! Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur voluptatum iure mollitia sit dolorem nulla facilis quia molestias exercitationem consectetur. Saepe dolore earum repellat in, perspiciatis quam! Velit, sit voluptatem.
+                <p>Checkout all the available crypto-currencies! Login to add any coin to your watchlist.</p>
+                <p></p>
             </div>
 
             {/* Coin display Table */}

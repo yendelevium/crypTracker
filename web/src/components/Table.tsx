@@ -36,7 +36,7 @@ function Table(props:{coinJSX: React.JSX.Element[]}) {
                         Market Price
                     </th>
                     <th scope="col" className="px-6 py-3">
-                        Last Updated AT (debugging purposes)
+                        Last Updated At
                     </th>
                     <th scope="col" className="px-6 py-3">
                         Action
