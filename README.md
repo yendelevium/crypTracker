@@ -37,7 +37,7 @@ The backend is built with Go for performance and scalability, paired with Postgr
 3. Create a .env file in the `root` directory with the following values. DB_URL must be for PostgreSQL with the following keys.
 ```bash
 COINGECKO_API_KEY="your_API_key"
-DB_URL="host user password dbname port sslmode"
+DB_URL="host=localhost user={username} password={password} dbname={database_name} port=5432 sslmode=disable"
 RUNTIME_ENV="production"
 SECRET="JWT Secret"
 VITE_SECRET="Same secret as SECRET"

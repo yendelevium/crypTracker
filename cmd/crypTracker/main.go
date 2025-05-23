@@ -41,10 +41,10 @@ func main() {
 	// UNCOMMENT WHEN YOU NEED TO SEED THE Database
 	// Find a better way to do this, maybe commandline arguments?!
 	// Ig even if u uncomment, it won't reseed as primary keys are same
-	// err = dbClient.Seed()
-	// if err != nil {
-	// 	log.Fatalf("Couldn't seed Database: %s", err)
-	// }
+	err = dbClient.Seed()
+	if err != nil {
+		log.Fatalf("Couldn't seed Database: %s", err)
+	}
 
 	// Start to fetch API data every 10 seconds
 	go dbClient.StartScraping()
